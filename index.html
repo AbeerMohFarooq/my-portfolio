@@ -595,7 +595,7 @@
 
         .project-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
         }
 
@@ -763,6 +763,21 @@
             fill: var(--primary);
         }
 
+        /* --- Mobile Menu Button --- */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .mobile-menu-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: currentColor;
+        }
+
         /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .hero-content {
@@ -796,8 +811,34 @@
                 grid-template-columns: 1fr;
             }
 
+            /* Mobile Navigation */
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .nav-links {
-                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: var(--bg-card);
+                flex-direction: column;
+                padding: 2rem 0;
+                border-bottom: 1px solid var(--border-color);
+                gap: 1.5rem;
+                align-items: center;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease-in-out;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+            }
+
+            /* Adjust section padding for mobile */
+            .about, .experience, .education, .projects, .skills, .contact, .featured {
+                padding: 4rem 0;
             }
         }
     </style>
@@ -825,6 +866,10 @@
                     <svg viewBox="0 0 24 24" id="moon-icon">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                     </svg>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle Menu">
+                    <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
                 </button>
             </div>
         </div>
@@ -1169,7 +1214,7 @@
                 </a>
 
                 <!-- Project 10 Mal3ab Kuwait -->
-                <a href="https://play.google.com/store/apps/details?id=com.mal3ab.kuwait&hl=en" class="project-card"
+                <a href="https://play.google.com/store/apps/details?id=io.gonative.android.rbwxbb&hl=en" class="project-card"
                     aria-label="View Mal3ab Kuwait project">
                     <div class="project-content">
                         <h3 class="project-title">Mal3ab Kuwait</h3>
@@ -1375,6 +1420,23 @@
                 localStorage.setItem('theme', newTheme);
                 updateIcon(newTheme);
             });
+
+            // --- Mobile Menu Toggle ---
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (mobileBtn && navLinks) {
+                mobileBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+
+                // Close menu when a link is clicked
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                    });
+                });
+            }
 
             // --- Notification Helper ---
             const notification = document.getElementById('form-notification');
